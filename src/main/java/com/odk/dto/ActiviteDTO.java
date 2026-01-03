@@ -35,7 +35,11 @@ public class ActiviteDTO {
     private Salle salleId;
     private Utilisateur createdBy;
     private TypeActivite typeActivite;
-//    private List<ParticipantDTO> listeDebut; // Liste de participants pour l'étape de début
+    private Integer candidatureRecu;
+    private Integer candidatureFemme;
+    private Integer cible;
+
+    //    private List<ParticipantDTO> listeDebut; // Liste de participants pour l'étape de début
 //    private List<ParticipantDTO> listeResultat; // Liste de participants pour l'étape de résultat
    private List<ActiviteValidationDTO> activitevalidation;
     // Constructeur

@@ -8,30 +8,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reporting-hebdo")
+@RequestMapping("/reportinghebdo")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200",
+        allowCredentials = "true")
 public class ReportingHebdoController {
 
     private final ReportingHebdoService reportingHebdoService;
 
+    /**
+     * Endpoint Reporting Hebdomadaire
+     * filtre : entité + date début + date fin
+     */
     @GetMapping("/activites")
     public ResponseEntity<List<ReportingHebdoActiviteDTO>> getActivitesHebdo(
-            @RequestParam
+            @RequestParam("entiteId") Long entiteId,
+            @RequestParam("dateDebut")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate date
+            LocalDate dateDebut,
+            @RequestParam("dateFin")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate dateFin
     ) {
-        return ResponseEntity.ok(
-                reportingHebdoService.getActivitesHebdo(date)
-        );
-    }
 
-    // 🔹 API de test : renvoie toutes les activités sans filtre de date
-    @GetMapping("/activites/test")
-    public ResponseEntity<List<ReportingHebdoActiviteDTO>> getAllActivitesTest() {
-        List<ReportingHebdoActiviteDTO> allActivites = reportingHebdoService.getAllActivites();
-        return ResponseEntity.ok(allActivites);
+        Date start = Date.from(
+                dateDebut.atStartOfDay(ZoneId.systemDefault()).toInstant()
+        );
+
+        Date end = Date.from(
+                dateFin.atTime(23, 59, 59)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+        );
+
+        List<ReportingHebdoActiviteDTO> result =
+                reportingHebdoService.getActivitesHebdo(entiteId, start, end);
+
+        return ResponseEntity.ok(result);
     }
 }

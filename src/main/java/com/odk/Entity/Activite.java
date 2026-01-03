@@ -37,6 +37,14 @@ public class Activite {
     @Column(columnDefinition = "TEXT")
     private String description;
     private Integer objectifParticipation;
+    @Column(name = "candidature_recu")
+    private Integer candidatureRecu;
+
+    @Column(name = "candidature_femme")
+    private Integer candidatureFemme;
+
+    @Column(name = "cible")
+    private Integer cible;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "entite_id")
     @JsonIgnore
@@ -56,6 +64,7 @@ public class Activite {
     @ManyToOne
     @JoinColumn(name = "salleId")
     private Salle salleId;
+
 
 @OneToMany(mappedBy = "activite", cascade = CascadeType.ALL)
 private List<ActiviteValidation> validations = new ArrayList<>();

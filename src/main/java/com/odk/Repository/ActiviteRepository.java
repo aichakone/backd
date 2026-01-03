@@ -97,5 +97,15 @@ public interface ActiviteRepository extends JpaRepository<Activite, Long> {
     )
     List<Activite> findByUser(@Param("userId") Long userId);
 
+    @Query("""
+    SELECT a FROM Activite a
+    WHERE a.entite.id = :entiteId
+    AND a.dateDebut BETWEEN :start AND :end
+""")
+    List<Activite> findByEntiteAndWeek(
+            @Param("entiteId") Long entiteId,
+            @Param("start") Date start,
+            @Param("end") Date end
+    );
 
 }
